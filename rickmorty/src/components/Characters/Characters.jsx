@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import { getCharacters, filterCharacters } from '../../actions';
+import { getCharactersByName, filterCharacters, getCharacters } from '../../actions';
 
 export default function Characters() {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1)
     const [status, setStatus] = useState("")
     const [gender, setGender] = useState("")
+    const [name, setName] = useState("")
     useEffect(() => {
         // dispatch(getCharacters(page))
         dispatch(filterCharacters(status, page, gender));
@@ -43,23 +44,61 @@ export default function Characters() {
         setGender(e.target.value);
         dispatch(filterCharacters(status, page, e.target.value));
         setPage(1);
-        console.log(gender,page,)
     }
+
+    function handleInputChangeName(e) {
+        e.preventDefault();
+        setName(e.target.value);
+    }
+
+    function handleSearchName(e) {
+        e.preventDefault();
+        let regEx = new RegExp(' ', 'g');
+        let newName = name.replace(regEx, '&');
+        dispatch(getCharactersByName(newName))
+    }
+
+    function handleReload(e){
+        e.preventDefault();
+        dispatch(getCharacters(1))
+        setPage(1)
+        setStatus("")
+        setName("")
+        setGender("")
+    }
+
+
     return (
         <div>
-            <select onChange={e => handleChStatus(e)}>
-                <option value=''>All</option>
-                <option value='alive'>Alive</option>
-                <option value='dead'>Dead</option>
-                <option value='unknown'>Unknown</option>
-            </select>
-            <select onChange={e => handleChGender(e)}>
-                <option value=''>All</option>
-                <option value='female'>Female</option>
-                <option value='male'>Male</option>
-                <option value='genderless'>Genderless</option>
-                <option value='unknown'>Unknown</option>
-            </select>
+            <div>
+                <button onClick={(e) => handleReload(e)}>Reload Characters</button>
+            </div>
+            <div>
+                <label>Name</label>
+                <input
+                    type="text"
+                    placeholder="Example: Rick Sanchez"
+                    onChange={(e) => handleInputChangeName(e)}
+                />
+                <button onClick={(e) => handleSearchName(e)}>Search</button>
+            </div>
+            <div>
+                <select onChange={e => handleChStatus(e)}>
+                    <option value=''>All</option>
+                    <option value='alive'>Alive</option>
+                    <option value='dead'>Dead</option>
+                    <option value='unknown'>Unknown</option>
+                </select>
+            </div>
+            <div>
+                <select onChange={e => handleChGender(e)}>
+                    <option value=''>All</option>
+                    <option value='female'>Female</option>
+                    <option value='male'>Male</option>
+                    <option value='genderless'>Genderless</option>
+                    <option value='unknown'>Unknown</option>
+                </select>
+            </div>
             {characters ? characters.results?.map(el => {
                 return (
                     <div key={el.id}>
@@ -70,15 +109,6 @@ export default function Characters() {
                     </div>
                 )
             }) : <></>
-                // characters?.map(el => {
-                //     return (
-                //         <div key={el.id}>
-                //             <p >Name {el.name}</p>
-                //             <p >Status {el.status}</p>
-                //             <p >Species {el.species}</p>
-                //         </div>
-                //     )
-                // })
             }
             <Link to="/">
                 Back to home
