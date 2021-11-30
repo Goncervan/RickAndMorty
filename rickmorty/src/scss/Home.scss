@@ -1,0 +1,83 @@
+.home{
+    width: 100vw;
+    height: 100vh;
+    // background: rgb(30, 30, 30);
+    background: rgb(26,144,165);
+background: linear-gradient(0deg, rgba(26,144,165,1) 0%, rgba(30,30,30,1) 40%);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+} 
+.image{
+    height: 50%;
+    width: 100%;
+    justify-self: flex-start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.title{
+    height: 10%;
+    color: #fff;
+}
+.buttons{
+    height: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    // background-color: rgb(26, 144, 165); 
+}
+.containerBtn{
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+}
+.subtitle{
+    width: 80%;
+    height: 30px;
+    text-align: center;
+    font-size: 25px;
+    color: rgb(0, 255, 0);
+    border-bottom: 1px solid rgb(0, 255, 0);
+}
+.portal{
+    width: 100px;
+    transition: all .3s;
+}
+.portal:hover{
+    transform: scale(1.2);
+}
+.locations{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+}
+.characters{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+}
+.episodes{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+}

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { getEpisodes, getEpisodeByNumber, getEpisodeByName } from '../../actions';
+import '../../scss/Locations.scss'
+import ECard from './ECard';
+
 
 export default function Characters() {
     const dispatch = useDispatch();
@@ -61,62 +64,72 @@ export default function Characters() {
         setName("")
     }
     return (
-        <div>
-            <div>
-                <span>Search By Number</span>
-                <input
-                    type="number"
-                    placeholder="Example: 1"
-                    onChange={(e) => handleInputChangeNumber(e)}
-                />
-            </div>
-            <div>
-                <span>Search By Name</span>
-                <input
-                    type="text"
-                    placeholder="Example: Pilot"
-                    onChange={(e) => handleInputChangeName(e)}
-                />
-                <button onClick={(e) => handleSearch(e)}>
-                    Search
-                </button>
-            </div>
-            <div>
-                <button onClick={(e) => handleReload(e)}>
-                    Reload episodes
-                </button>
-            </div>
-            {episodes ? episodes.results?.map(el => {
-                return (
-                    <div key={el.id}>
-                        <p >Name {el.name}</p>
-                        <p >Episode {el.episode}</p>
-                        <p >Date {el.air_date}</p>
-                    </div>
-                )
-            }) :
-                <></>}
-            {number > 0 ? (
-                <div>
-                    <p>{episodes.name}</p>
-                    <p>{episodes.air_date}</p>
-                    <p>{episodes.episode}</p>
+        <div className="con">
+            <div className="navbar">
+                <div className="inputContainer">
+                    <label className="label">Number</label>
+                    <input
+                        className="input"
+                        type="number"
+                        placeholder="Example: 1"
+                        onChange={(e) => handleInputChangeNumber(e)}
+                    />
                 </div>
-            ) :
-                <></>
-            }
-            <div>
-                <Link to="/">
-                    Back to home
-                </Link>
+                <div className="inputContainer">
+                    <button
+                        className="btn-reload"
+                        onClick={(e) => handleReload(e)}>
+                        Reload episodes
+                    </button>
+                </div>
+                <div className="inputContainer">
+                    <label className="label">Name</label>
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Example: Pilot"
+                        onChange={(e) => handleInputChangeName(e)}
+                    />
+                    <button
+                        className="btn-Search"
+                        onClick={(e) => handleSearch(e)}>
+                        Search
+                    </button>
+                </div>
             </div>
-            <div>
-                <span>Page N° {page}</span>
-                <div>
-                    <button onClick={e => { handlePrevPage(e) }}>
+            <div className="cardsContainer">
+                {episodes ? episodes.results?.map(el => {
+                    return (
+                        <div className="card" key={el.id}>
+                            <ECard name={el.name} episode={el.episode} air_date={el.air_date}/>
+                        </div>
+                    )
+                }) :
+                    <></>}
+                {number > 0 ? (
+                    <div className="card" key={episodes.id}>
+                        {/* <p>{episodes.name}</p>
+                        <p>{episodes.air_date}</p>
+                        <p>{episodes.episode}</p> */}
+                        <ECard name={episodes.name} episode={episodes.episode} air_date={episodes.air_date}/>
+                    </div>
+                ) :
+                    <></>
+                }
+            </div>
+            <div className="footer">
+                <div className="footerContainer">
+                    <button
+                        className="btn-page"
+                        onClick={e => { handlePrevPage(e) }}>
                         Previous Page
                     </button>
-                    <button onClick={e => { handleNextPage(e) }}>
+                    <Link className="btnBack" to="/">
+                        Back to home
+                    </Link>
+                    <button
+                        className="btn-page"
+                        onClick={e => { handleNextPage(e) }}>
                         Next Page
                     </button>
                 </div>

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { getCharactersByName, filterCharacters, getCharacters } from '../../actions';
+import '../../scss/Locations.scss'
+import CCard from './CCards';
+
 
 export default function Characters() {
     const dispatch = useDispatch();
@@ -58,7 +61,7 @@ export default function Characters() {
         dispatch(getCharactersByName(newName))
     }
 
-    function handleReload(e){
+    function handleReload(e) {
         e.preventDefault();
         dispatch(getCharacters(1))
         setPage(1)
@@ -69,57 +72,84 @@ export default function Characters() {
 
 
     return (
-        <div>
-            <div>
-                <button onClick={(e) => handleReload(e)}>Reload Characters</button>
+        <div className="con">
+            <div className="navbar">
+                <div className="inputContainer">
+                    <label className="label">Name</label>
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Example: Rick Sanchez"
+                        onChange={(e) => handleInputChangeName(e)}
+                    />
+                    <button
+                        className="btn-Search"
+                        onClick={(e) => handleSearchName(e)}>Search</button>
+                </div>
+                <div className="inputContainer">
+                    <label className="label">Status</label>
+                    <select className="select" onChange={e => handleChStatus(e)}>
+                        <option value=''>All</option>
+                        <option value='alive'>Alive</option>
+                        <option value='dead'>Dead</option>
+                        <option value='unknown'>Unknown</option>
+                    </select>
+                </div>
+                <div className="inputContainer">
+                    <label className="label">Genre</label>
+                    <select className="select" onChange={e => handleChGender(e)}>
+                        <option value=''>All</option>
+                        <option value='female'>Female</option>
+                        <option value='male'>Male</option>
+                        <option value='genderless'>Genderless</option>
+                        <option value='unknown'>Unknown</option>
+                    </select>
+                </div>
+                <div className="inputContainer">
+                    <button
+                        className="btn-reload"
+                        onClick={(e) => handleReload(e)}>Reload Characters</button>
+                </div>
             </div>
-            <div>
-                <label>Name</label>
-                <input
-                    type="text"
-                    placeholder="Example: Rick Sanchez"
-                    onChange={(e) => handleInputChangeName(e)}
-                />
-                <button onClick={(e) => handleSearchName(e)}>Search</button>
+            <div className="charactersContainer">
+                {characters ? characters.results?.map(el => {
+                    return (
+                        <div className="characters" key={el.id}>
+                            {/* <p >Name {el.name}</p>
+                            <p >Status {el.status}</p>
+                            <p >Species {el.species}</p>
+                            <p >Gender {el.gender}</p>
+                            <img alt="Img" src={el.image}/> */}
+                        <CCard 
+                        name={el.name} 
+                        status={el.status} 
+                        species={el.species}
+                        gender={el.gender}
+                        image={el.image}
+                        />
+                        
+                        </div>
+                    )
+                }) : <></>
+                }
             </div>
-            <div>
-                <select onChange={e => handleChStatus(e)}>
-                    <option value=''>All</option>
-                    <option value='alive'>Alive</option>
-                    <option value='dead'>Dead</option>
-                    <option value='unknown'>Unknown</option>
-                </select>
+            <div className="footer">
+                <div className="footerContainer">
+                    <button
+                        className="btn-page"
+                        onClick={e => { handlePrevPage(e) }}>
+                        Previous Page
+                    </button>
+                    <Link className="btnBack" to="/">
+                        Back to home
+                    </Link>
+                    <button
+                        className="btn-page"
+                        onClick={e => { handleNextPage(e) }}>
+                        Next Page
+                    </button>
+                </div>
             </div>
-            <div>
-                <select onChange={e => handleChGender(e)}>
-                    <option value=''>All</option>
-                    <option value='female'>Female</option>
-                    <option value='male'>Male</option>
-                    <option value='genderless'>Genderless</option>
-                    <option value='unknown'>Unknown</option>
-                </select>
-            </div>
-            {characters ? characters.results?.map(el => {
-                return (
-                    <div key={el.id}>
-                        <p >Name {el.name}</p>
-                        <p >Status {el.status}</p>
-                        <p >Species {el.species}</p>
-                        <p >Gender {el.gender}</p>
-                    </div>
-                )
-            }) : <></>
-            }
-            <Link to="/">
-                Back to home
-            </Link>
-            <span>Page N° {page}</span>
-            <button onClick={e => { handlePrevPage(e) }}>
-                Previous Page
-            </button>
-            <button onClick={e => { handleNextPage(e) }}>
-                Next Page
-            </button>
         </div>
     )
 }

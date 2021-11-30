@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { getLocations, getLocationsByDimension, getLocationsByName } from '../../actions';
+import LCard from './LCards';
+import '../../scss/Locations.scss'
+
 
 export default function Locations() {
     const dispatch = useDispatch();
@@ -53,10 +56,10 @@ export default function Locations() {
         setName("")
         let regEx = new RegExp(' ', 'g');
         let newDimension = dimension.replace(regEx, '&');
-        dispatch(getLocationsByDimension(page,newDimension))
+        dispatch(getLocationsByDimension(page, newDimension))
     }
 
-    function handleReload(e){
+    function handleReload(e) {
         e.preventDefault();
         setName("");
         setDimension("");
@@ -65,47 +68,65 @@ export default function Locations() {
     }
 
     return (
-        <div>
-            <div>
-                <label>Name</label>
-                <input
-                    type="text"
-                    placeholder="Example: Abadango"
-                    onChange={(e) => handleInputChangeName(e)}
-                />
-                <button onClick={(e) => handleSearchName(e)}>Search</button>
+        <div className="con">
+            <div className="navbar">
+                <div className="inputContainer">
+                    <label className="label">Name</label>
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Example: Abadango"
+                        onChange={(e) => handleInputChangeName(e)}
+                    />
+                    <button
+                        className="btn-Search"
+                        onClick={(e) => handleSearchName(e)}>Search</button>
+                </div>
+                <div className="inputContainer">
+                    <button
+                        className="btn-reload"
+                        onClick={(e) => handleReload(e)}>Reload locations</button>
+                </div>
+                <div className="inputContainer">
+                    <label className="label">Dimension</label>
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Example: Unknown"
+                        onChange={(e) => handleInputChangeDimension(e)}
+                    />
+                    <button
+                        className="btn-Search"
+                        onClick={(e) => handleSearchDimension(e)}>Search</button>
+                </div>
             </div>
-            <div>
-                <label>Dimension</label>
-                <input
-                    type="text"
-                    placeholder="Example: Replacement Dimension"
-                    onChange={(e) => handleInputChangeDimension(e)}
-                />
-                <button onClick={(e) => handleSearchDimension(e)}>Search</button>
+            <div className="cardsContainer">
+                {locations ? locations.results?.map(el => {
+                    return (
+                        <div className="card" key={el.id}>
+                            <LCard name={el.name} type={el.type} dimension={el.dimension} />
+                        </div>
+                    )
+                }) :
+                    <></>}
             </div>
-            <div>
-                <button onClick={(e) => handleReload(e)}>Reload locations</button>
+            <div className="footer">
+                <div className="footerContainer">
+                    <button
+                        className="btn-page"
+                        onClick={e => { handlePrevPage(e) }}>
+                        Previous Page
+                    </button>
+                    <Link className="btnBack" to="/">
+                        Back to home
+                    </Link>
+                    <button
+                        className="btn-page"
+                        onClick={e => { handleNextPage(e) }}>
+                        Next Page
+                    </button>
+                </div>
             </div>
-            {locations ? locations.results?.map(el => {
-                return (
-                    <div key={el.id}>
-                        <p >name {el.name}</p>
-                        <p >type {el.type}</p>
-                        <p >dimension {el.dimension}</p>
-                    </div>
-                )
-            }) :
-                <></>}
-            <Link to="/">
-                Back to home
-            </Link>
-            <button onClick={e => { handlePrevPage(e) }}>
-                Previous Page
-            </button>
-            <button onClick={e => { handleNextPage(e) }}>
-                Next Page
-            </button>
         </div>
     )
 }
