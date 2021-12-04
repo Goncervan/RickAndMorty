@@ -65,9 +65,9 @@ export function getCharacters(page) {
         })
     }
 }
-export function getCharactersByName(name) {
+export function getCharactersByName(name, page) {
     return async function (dispatch) {
-        let result = await axios.get(`https://rickandmortyapi.com/api/character?name=${name}`)
+        let result = await axios.get(`https://rickandmortyapi.com/api/character?name=${name}&page=${page}`)
         return dispatch({
             type: 'GET_CHARACTER_BY_NAME',
             payload: result.data
@@ -75,11 +75,20 @@ export function getCharactersByName(name) {
     }
 }
 
-export function filterCharacters(status, page, gender) {
+export function getCharactersByStatus(status, page) {
     return async function (dispatch) {
-        let result = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page}&status=${status}&gender=${gender}`)
+        let result = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page}&status=${status}`)
         return dispatch({
-            type: 'FILTER_CHARACTERS',
+            type: 'GET_CHARACTERS_BY_STATUS',
+            payload: result.data
+        })
+    }
+}
+export function getCharactersByGender(gender, page) {
+    return async function (dispatch) {
+        let result = await axios.get(`https://rickandmortyapi.com/api/character/?page=${page}&gender=${gender}`)
+        return dispatch({
+            type: 'GET_CHARACTERS_BY_GENDER',
             payload: result.data
         })
     }

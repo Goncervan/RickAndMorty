@@ -40,15 +40,18 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 allCharacters: action.payload,
-                characters: action.payload
             }
         case 'GET_CHARACTER_BY_NAME':
             return {
                 ...state,
-                allCharacters: action.payload,
-                characters: action.payload
+                allCharacters: action.payload
             }
-        case 'FILTER_CHARACTERS':
+        case 'GET_CHARACTERS_BY_STATUS':
+            return {
+                ...state,
+                allCharacters: action.payload
+            }
+        case 'GET_CHARACTERS_BY_GENDER':
             return {
                 ...state,
                 allCharacters: action.payload

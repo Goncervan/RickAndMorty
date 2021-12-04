@@ -11,9 +11,10 @@ export default function Locations() {
     const [page, setPage] = useState(1)
     const [name, setName] = useState("")
     const [dimension, setDimension] = useState("")
+
     useEffect(() => {
         dispatch(getLocations(page))
-    }, [page])
+    }, [])
 
     const locations = useSelector((state) => state.allLocations);
 
@@ -21,7 +22,14 @@ export default function Locations() {
         e.preventDefault();
         if (page < locations.info.pages) {
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-            setPage(page + 1);
+
+            if (dimension.length > 0) {
+                dispatch(getLocationsByDimension(dimension, page + 1))
+            } else if (name.length > 0) {
+                dispatch(getLocationsByName(name, page + 1))
+            } else {
+                setPage(page + 1);
+            }
         } else {
             alert("last page!")
         }
@@ -32,8 +40,14 @@ export default function Locations() {
         if (page === 1) {
             alert("First page!")
         } else {
-            setPage(page - 1);
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            if (dimension.length > 0) {
+                dispatch(getLocationsByDimension(dimension, page - 1))
+            } else if (name.length > 0) {
+                dispatch(getLocationsByName(name, page - 1))
+            } else {
+                setPage(page - 1);
+            }
         }
     }
 

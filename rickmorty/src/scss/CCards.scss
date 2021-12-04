@@ -7,6 +7,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    animation: show .5s;
 }
 .sections{
     width: 100%;
@@ -31,4 +32,16 @@
     width: 150px;
     height: 150px;
     border: 5px solid rgb(26,144,165) ;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) ;
+        
+    }
+    100% {
+        opacity: 100%;
+        transform: translateY(0px) ;
+    }
 }

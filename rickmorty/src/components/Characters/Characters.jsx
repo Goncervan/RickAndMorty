@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import { getCharactersByName, filterCharacters, getCharacters } from '../../actions';
+import { getCharacters, getCharactersByName, getCharactersByStatus, getCharactersByGender } from '../../actions';
 import '../../scss/Locations.scss'
 import CCard from './CCards';
 
@@ -13,15 +13,31 @@ export default function Characters() {
     const [gender, setGender] = useState("")
     const [name, setName] = useState("")
     useEffect(() => {
-        // dispatch(getCharacters(page))
-        dispatch(filterCharacters(status, page, gender));
-    }, [page])
+        dispatch(getCharacters(page));
+    }, [])
+    
+    
     const characters = useSelector((state) => state.allCharacters);
+    
+    
+
+
+
+
     function handleNextPage(e) {
         e.preventDefault();
-        if (page < characters.info.pages) {
+        if (characters.info.next) {
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
             setPage(page + 1);
+            if (status.length > 0) {
+                dispatch(getCharactersByStatus(status, page + 1))
+            } else if (gender.length > 0) {
+                dispatch(getCharactersByGender(gender, page + 1))
+            } else if (name.length > 0) {
+                dispatch(getCharactersByName(name, page + 1))
+            } else {
+                dispatch(getCharacters(page + 1))
+            }
         } else {
             alert("last page!")
         }
@@ -29,24 +45,37 @@ export default function Characters() {
 
     function handlePrevPage(e) {
         e.preventDefault();
-        if (page === 1) {
+        if (!characters.info.prev) {
             alert("First page!")
         } else {
             setPage(page - 1);
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            if (status.length > 0) {
+                dispatch(getCharactersByStatus(status, page - 1))
+            } else if (gender.length > 0) {
+                dispatch(getCharactersByGender(gender, page - 1))
+            } else if (name.length > 0) {
+                dispatch(getCharactersByName(name, page - 1))
+            } else {
+                dispatch(getCharacters(page - 1))
+            }
         }
     }
     function handleChStatus(e) {
         e.preventDefault();
         setStatus(e.target.value);
-        dispatch(filterCharacters(e.target.value, page, gender));
+        dispatch(getCharactersByStatus(e.target.value, 1));
         setPage(1);
+        setName("")
+        setGender("")
     }
     function handleChGender(e) {
         e.preventDefault();
         setGender(e.target.value);
-        dispatch(filterCharacters(status, page, e.target.value));
+        dispatch(getCharactersByGender(e.target.value, page));
         setPage(1);
+        setStatus("")
+        setName("")
     }
 
     function handleInputChangeName(e) {
@@ -54,12 +83,49 @@ export default function Characters() {
         setName(e.target.value);
     }
 
+
+
+    // Performance Challenge (incompleto)
+    
+    // const charactersNames = useSelector((state) => state.characters);
+    // const [storageArray, setStorageArray] = useState([])
+    // const [search, setSearch] = useState(false)
+
+
+    // function save(array) {
+    //     let newArray = array?.results?.map(el => {
+    //         const ch = {
+    //             name: el.name,
+    //             status: el.status,
+    //             gender: el.gender,
+    //             species: el.species,
+    //             image: el.image
+    //         }
+    //         return ch;
+    //     })
+    //     localStorage.setItem('characterList', JSON.stringify(newArray));
+    //     let itemStorage = localStorage.getItem("characterList");
+    //     setStorageArray(JSON.parse(itemStorage));
+    //     console.log(storageArray)
+    // }
     function handleSearchName(e) {
         e.preventDefault();
         let regEx = new RegExp(' ', 'g');
         let newName = name.replace(regEx, '&');
-        dispatch(getCharactersByName(newName))
+        dispatch(getCharactersByName(newName));
+        setPage(1);
+        setStatus("")
+        setGender("")
+        // setSearch(true);
+        // save(charactersNames)
     }
+
+
+    // function probar(e) {
+    //     e.preventDefault();
+    //     save(charactersNames);
+    //     console.log(storageArray)
+    // }
 
     function handleReload(e) {
         e.preventDefault();
@@ -69,6 +135,17 @@ export default function Characters() {
         setName("")
         setGender("")
     }
+
+
+
+
+
+    // ----PERFORMANCE CHALLENGE----
+    // 1- Cuando busque, debería recorrer el array de resultados
+    // 2- Guardar el array en el localStorage haciendole un JSON.stringify("array")
+    // 3- Cuando busque de vuelta, deberia recuperar la lista esa con y hacer JSON.parse("arrayDelStorage")
+    // 4- Si la lista tiene algo, buscar ahí el personaje por el nombre, y si no existe, ahí hacer la busqueda en la api
+
 
 
     return (
@@ -108,29 +185,25 @@ export default function Characters() {
                 <div className="inputContainer">
                     <button
                         className="btn-reload"
-                        onClick={(e) => handleReload(e)}>Reload Characters</button>
+                        onClick={(e) => handleReload(e)}>Reload Characters
+                    </button>
                 </div>
             </div>
             <div className="charactersContainer">
-                {characters ? characters.results?.map(el => {
-                    return (
-                        <div className="characters" key={el.id}>
-                            {/* <p >Name {el.name}</p>
-                            <p >Status {el.status}</p>
-                            <p >Species {el.species}</p>
-                            <p >Gender {el.gender}</p>
-                            <img alt="Img" src={el.image}/> */}
-                        <CCard 
-                        name={el.name} 
-                        status={el.status} 
-                        species={el.species}
-                        gender={el.gender}
-                        image={el.image}
-                        />
-                        
-                        </div>
-                    )
-                }) : <></>
+                {
+                    characters?.results?.map(el => {
+                        return (
+                            <div className="characters" key={el.id}>
+                                <CCard
+                                    name={el.name}
+                                    status={el.status}
+                                    species={el.species}
+                                    gender={el.gender}
+                                    image={el.image}
+                                />
+                            </div>
+                        )
+                    })
                 }
             </div>
             <div className="footer">
