@@ -20,15 +20,16 @@ export default function Locations() {
 
     function handleNextPage(e) {
         e.preventDefault();
-        if (page < locations.info.pages) {
+        console.log(dimension)
+        if (locations.info.next) {
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-
+            setPage(page + 1)
             if (dimension.length > 0) {
                 dispatch(getLocationsByDimension(dimension, page + 1))
             } else if (name.length > 0) {
                 dispatch(getLocationsByName(name, page + 1))
             } else {
-                setPage(page + 1);
+                dispatch(getLocations(page + 1))
             }
         } else {
             alert("last page!")
@@ -37,16 +38,20 @@ export default function Locations() {
 
     function handlePrevPage(e) {
         e.preventDefault();
-        if (page === 1) {
+        console.log(dimension)
+        if (!locations.info.prev) {
             alert("First page!")
         } else {
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
             if (dimension.length > 0) {
+                console.log("dime")
                 dispatch(getLocationsByDimension(dimension, page - 1))
             } else if (name.length > 0) {
+                console.log("Name")
                 dispatch(getLocationsByName(name, page - 1))
             } else {
-                setPage(page - 1);
+                console.log("None")
+                dispatch(getLocations(page - 1))
             }
         }
     }
@@ -59,7 +64,10 @@ export default function Locations() {
         e.preventDefault();
         let regEx = new RegExp(' ', 'g');
         let newName = name.replace(regEx, '&');
-        dispatch(getLocationsByName(newName))
+        dispatch(getLocationsByName(newName));
+        setName(newName)
+        setDimension("");
+        setPage(1);
     }
     function handleInputChangeDimension(e) {
         e.preventDefault();
@@ -67,10 +75,12 @@ export default function Locations() {
     }
     function handleSearchDimension(e) {
         e.preventDefault();
-        setName("")
         let regEx = new RegExp(' ', 'g');
         let newDimension = dimension.replace(regEx, '&');
-        dispatch(getLocationsByDimension(page, newDimension))
+        dispatch(getLocationsByDimension(page, newDimension));
+        setDimension(newDimension)
+        setName("");
+        setPage(1);
     }
 
     function handleReload(e) {
