@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/RickAndMorty/static/css/main.a4bbc958.chunk.css",
+    "main.js": "/RickAndMorty/static/js/main.a8dbba1f.chunk.js",
+    "main.js.map": "/RickAndMorty/static/js/main.a8dbba1f.chunk.js.map",
+    "runtime-main.js": "/RickAndMorty/static/js/runtime-main.d6678194.js",
+    "runtime-main.js.map": "/RickAndMorty/static/js/runtime-main.d6678194.js.map",
+    "static/js/2.3ba1b268.chunk.js": "/RickAndMorty/static/js/2.3ba1b268.chunk.js",
+    "static/js/2.3ba1b268.chunk.js.map": "/RickAndMorty/static/js/2.3ba1b268.chunk.js.map",
+    "static/js/3.7bffa1b8.chunk.js": "/RickAndMorty/static/js/3.7bffa1b8.chunk.js",
+    "static/js/3.7bffa1b8.chunk.js.map": "/RickAndMorty/static/js/3.7bffa1b8.chunk.js.map",
+    "index.html": "/RickAndMorty/index.html",
+    "static/css/main.a4bbc958.chunk.css.map": "/RickAndMorty/static/css/main.a4bbc958.chunk.css.map",
+    "static/js/2.3ba1b268.chunk.js.LICENSE.txt": "/RickAndMorty/static/js/2.3ba1b268.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d6678194.js",
+    "static/js/2.3ba1b268.chunk.js",
+    "static/css/main.a4bbc958.chunk.css",
+    "static/js/main.a8dbba1f.chunk.js"
+  ]
+}
