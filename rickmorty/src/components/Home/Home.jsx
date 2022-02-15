@@ -6,7 +6,6 @@ export default function Home() {
     return (
         <div className="home">
             <div className="image">
-                {/* <img alt="Logo" src="http://assets.stickpng.com/images/58f37720a4fa116215a9240f.png" /> */}
                 <img alt="Logo" src="https://occ-0-1723-1722.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABddiw4GEUq76B3fmiI7r6NF-GrWeEf99MjwKrfixFKM4B4o1uuitcgbuBNa3n04L5GSamUi2vex4adduBV-S2XGERxn29-ffvoRv.png?r=a6e" />
             </div>
             <h1 className="title">¡Discover one of the most interesting series today!</h1>
